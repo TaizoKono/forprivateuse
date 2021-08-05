@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>受講後アンケート</title>
+    <!-- Add some CSS to change client UI -->
+    <style>
+    body {
+        background-color: #f0fff0;
+        }
+    label, button{
+        color: #ff3300;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 25px;
+        margin-left: 40px;
+        }
+     input {
+        color: #232F3E;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        margin-left: 30px;
+        }
+    h2, h5, p, textarea{
+        font-family: Arial, Helvetica, sans-serif;
+        margin-left: 40px;
+    }
+    </style>
+    <script>
+        // define the callAPI function that takes a first name and last name as parameters
+        var callAPI = (answer1,answer2,answer3,answer4,answer5)=>{
+            // instantiate a headers object
+            var myHeaders = new Headers();
+            // add content type header to object
+            myHeaders.append("Content-Type", "application/json");
+            // using built in JSON utility package turn object to string and store in a variable
+            var raw = JSON.stringify({"answer1":answer1,"answer2":answer2,"answer3":answer3,"answer4":answer4,"answer5":answer5});
+            // create a JSON object with parameters for API call and store in a variable
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+            // make API call with parameters and use promises to get response
+            fetch("https://almw6btfvd.execute-api.ap-northeast-1.amazonaws.com/dev", requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    console.error('エラーレスポンス', response);
+                } else {
+                    resultmessage.innerHTML = createHTML();
+                }
+            }).catch(error => console.log('error', error));
+
+            //.then(result => alert(JSON.parse(result).body))
+            //.catch(error => console.log('error', error));
+        }
+
+        function createHTML() {
+            text = "<h2>回答ありがとうございました！</h2><p>頂いたご意見は今後の研修運営の参考とさせていただきます。</p><p>ページを閉じて終了してください。</p>"
+            return text;
+        }
+    </script>
+</head>
+<body>
+    <h1>ブロック研修フィードバックフォーム</h1>
+    <h3>～今回の研修について、率直なご意見を聞かせてください！～</h3>
+
+    <form>
+        <div>
+        <label>理解度について :</label><br>
+        <input type="radio" name = "q1" id="answer1" value="８割以上">８割以上
+        <input type="radio" name = "q1" id="answer1" value="５～７割程度">５～７割程度
+        <input type="radio" name = "q1" id="answer1" value="５割未満">５割未満
+        </div>
+
+        <br>
+
+        <div>
+        <label>講義時間について :</label><br>
+        <input type="radio" name = "q2" id="answer2" value="長かった">長かった
+        <input type="radio" name = "q2" id="answer2" value="ちょうどよい">ちょうどよい
+        <input type="radio" name = "q2" id="answer2" value="短かった">短かった
+        </div>
+
+        <br>
+
+        <div>
+        <label>講義の情報量について :</label><br>
+        <input type="radio" name = "q3" id="answer3" value="内容が多い">内容が多い
+        <input type="radio" name = "q3" id="answer3" value="適切な量">適切な量
+        <input type="radio" name = "q3" id="answer3" value="内容が少ない">内容が少ない
+        </div>
+
+        <br>
+
+
+        <label>不明点、質問、もっと詳しく聞きたい点 :</label><br>
+        <!-- <div style="position: absolute; top: 290px; left: 450px"> -->
+            <textarea id="answer4" cols="50" rows=5></textarea>
+        <!-- </div> -->
+
+        <br>
+        
+        <label>その他コメント、感想等何でもどうぞ！ :</label><br>
+        <!-- <div style="position: absolute; top: 390px; left: 450px"> -->
+            <textarea id="answer5" cols="50" rows=5></textarea>
+        <!-- </div> -->
+
+        <br>
+        <br>
+
+        <!-- set button onClick method to call function we defined passing input values as parameters -->
+        <div id="resultmessage">
+            <button type="button" onclick="callAPI(document.getElementById('answer1').value,document.getElementById('answer2').value,document.getElementById('answer3').value,document.getElementById('answer4').value,document.getElementById('answer5').value)">送信</button>
+        </div>
+
+    </form>
+</body>
+</html>
