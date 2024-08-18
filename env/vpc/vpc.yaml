@@ -52,8 +52,8 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
-    
-    PublicRouteTable:
+  
+  PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
@@ -76,21 +76,21 @@ Resources:
       SubnetId: !Ref PublicSubnet
 
     SecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: "public-sg"
-      GroupDescription: "Security group for instances in public subnet"
-      SecurityGroupEgress: 
-        - IpProtocol: -1
-          FromPort: -1
-          ToPort: -1
-          CidrIp: 0.0.0.0/0
-      SecurityGroupIngress: 
-        - IpProtocol: -1
-          FromPort: -1
-          ToPort: -1
-          CidrIp: 0.0.0.0/0
-      VpcId: !Ref VPC
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupName: "public-sg"
+        GroupDescription: "Security group for instances in public subnet"
+        SecurityGroupEgress: 
+          - IpProtocol: -1
+            FromPort: -1
+            ToPort: -1
+            CidrIp: 0.0.0.0/0
+        SecurityGroupIngress: 
+          - IpProtocol: -1
+            FromPort: -1
+            ToPort: -1
+            CidrIp: 0.0.0.0/0
+        VpcId: !Ref VPC
 
 
 Outputs:
@@ -98,10 +98,10 @@ Outputs:
     Description: A reference to the created VPC
     Value: !Ref VPC
 
-    PublicSubnet:
+  PublicSubnet:
     Description: A reference to the created public subnet
     Value: !Ref PublicSubnet
 
-    SecurityGroup:
+  SecurityGroup:
     Description: A reference to the created Security group
-    Value: !Ref NoIngressSecurityGroup
+    Value: !Ref SecurityGroup
