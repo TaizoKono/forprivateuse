@@ -81,12 +81,12 @@ Resources:
           
   LaunchTemplate:
     Type: 'AWS::EC2::LaunchTemplate'
-      Properties:
-        LaunchTemplateData:
-          IamInstanceProfile:
-            Arn: !GetAtt
-              - IamInstanceProfile
-              - Arn
+    Properties:
+      LaunchTemplateData:
+        IamInstanceProfile:
+          Arn: !GetAtt
+            - IamInstanceProfile
+            - Arn
       BlockDeviceMappings: 
         - Ebs:
             VolumeSize: 30
