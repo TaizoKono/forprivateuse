@@ -83,8 +83,8 @@ Resources:
             DeviceName: /dev/xvdcz
       ImageId: !Ref MachineImageID
       InstanceType: g4dn.xlarge
-      SecurityGroupIds: Fn::ImportValue:
-        !Sub '${NetworkStackName}-SecurityGroupID'
+      SecurityGroupIds: 
+        - Fn::ImportValue: !Sub ${NetworkStackName}-SecurityGroupID
       TagSpecifications:
         - ResourceType: instance
           Tags:
