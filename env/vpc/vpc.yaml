@@ -14,14 +14,14 @@ Parameters:
     Default: 10.0.0.0/16
 
   PublicSubnetCIDR:
-    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+    Description: Please enter the IP range (CIDR notation) for the public subnet
     Type: String
     Default: 10.0.1.0/24
 
   PublicSubnetAZ:
+    Description: Please enter the AZ for the public subnet
     Type: String
     Default: us-east-1a
-    AllowedValues:
 
 Resources:
   VPC:
