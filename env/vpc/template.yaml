@@ -101,14 +101,30 @@ Resources:
           Value: !Sub ${EnvironmentName} Public SG
 
 Outputs:
+  EnvironmentName:
+    Description: A reference to the Environment Name
+    Value: !Ref EnvironmentName
+    Export:
+      Name:
+        'Fn::Sub': '${AWS::StackName}-EnvironmentName'
+
   VPC:
     Description: A reference to the created VPC
     Value: !Ref VPC
+    Export:
+      Name:
+        'Fn::Sub': '${AWS::StackName}-VPC-ID'
 
   PublicSubnet:
     Description: A reference to the created public subnet
     Value: !Ref PublicSubnet
+    Export:
+      Name:
+        'Fn::Sub': '${AWS::StackName}-SubnetID'
 
   SecurityGroup:
     Description: A reference to the created Security group
     Value: !Ref SecurityGroup
+    Export:
+      Name:
+        'Fn::Sub': '${AWS::StackName}-SecurityGroupID'
