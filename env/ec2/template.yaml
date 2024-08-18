@@ -1,4 +1,4 @@
-# スタック名は '環境名'-EC2(ex.dev-NW) で指定すること。
+# スタック名は '環境名'-EC2(ex.dev-EC2) で指定すること。
 
 AWSTemplateFormatVersion: "2010-09-09"
 
