@@ -84,8 +84,8 @@ Resources:
         ImageId: !Ref MachineImageID
         InstanceType: g4dn.xlarge
         NetworkInterfaces:
-          - SubnetId: Fn::ImportValue: 
-              'Fn::Sub': '${NetworkStackName}-SubnetID'
+          - SubnetId: !ImportValue
+              !Sub '${NetworkStackName}-SubnetID'
         SecurityGroupIds: 
           - Fn::ImportValue: !Sub ${NetworkStackName}-SecurityGroupID
         TagSpecifications:
