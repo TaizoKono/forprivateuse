@@ -103,10 +103,14 @@ Resources:
 
 
 Outputs:
-  IAM:
+  InstanceProfileRole:
     Description: A reference to the created IAM resource
     Value: 
       - !Ref InstanceProfileRole
+      
+  IamInstanceProfile:
+    Description: A reference to the created IAM resource
+    Value: 
       - !Ref IamInstanceProfile
 
   EC2:
