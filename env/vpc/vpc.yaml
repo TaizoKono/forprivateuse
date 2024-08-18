@@ -18,6 +18,11 @@ Parameters:
     Type: String
     Default: 10.0.1.0/24
 
+  PublicSubnetAZ:
+    Type: String
+    Default: us-east-1a
+    AllowedValues:
+
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -27,14 +32,14 @@ Resources:
       EnableDnsHostnames: true
       Tags:
         - Key: Name
-          Value: !Ref EnvironmentName
+          Value: !Sub ${EnvironmentName} VPC
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
         - Key: Name
-          Value: !Ref EnvironmentName
+          Value: !Sub ${EnvironmentName} IGW
 
   InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
@@ -51,7 +56,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+          Value: !Sub ${EnvironmentName} Public Subnet
   
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
@@ -91,7 +96,9 @@ Resources:
           ToPort: -1
           CidrIp: 0.0.0.0/0
       VpcId: !Ref VPC
-
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public SG
 
 Outputs:
   VPC:
