@@ -19,8 +19,9 @@ Parameters:
   SubnetID:
     Description: A Subnet ID for EC2 Instance
     Type: String
-    Default: Fn::ImportValue: 
-      'Fn::Sub': '${NetworkStackName}-SubnetID'
+    Default: 
+      - Fn::ImportValue: 
+        'Fn::Sub': '${NetworkStackName}-SubnetID'
 
   SecurityGroupID:
     Description: A Security group ID for EC2 Instance
