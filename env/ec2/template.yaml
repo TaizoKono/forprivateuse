@@ -79,7 +79,7 @@ Resources:
       Roles:
         - !Ref InstanceProfileRole
           
-   LaunchTemplate:
+  LaunchTemplate:
      Type: 'AWS::EC2::LaunchTemplate'
      Properties:
        LaunchTemplateData:
