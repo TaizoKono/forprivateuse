@@ -14,25 +14,8 @@ Parameters:
   NetworkStackName:
     Description: the stack name of NW to deploy EC2 instance
     Type: String
+    # インスタンスをデプロイするNWスタックを指定する。
     Default: dev-NW
-
-  SubnetID:
-    Description: A Subnet ID for EC2 Instance
-    Type: AWS::EC2::Subnet::Id
-    Default: 
-      - Fn::ImportValue: 
-        - !Sub
-          - '${NetworkStackName}-SubnetID'
-          - NetworkStackName: !Ref NetworkStackName
-
-  SecurityGroupID:
-    Description: A Security group ID for EC2 Instance
-    Type: AWS::EC2::SecurityGroup::Id
-    Default: 
-      - Fn::ImportValue: 
-        - !Sub
-          - '${NetworkStackName}-SecurityGroupID'
-          - NetworkStackName: !Ref NetworkStackName
 
   MachineImageID:
     # AMIの指定。将来的にカスタムイメージを使う場合はここを変更。
@@ -101,7 +84,8 @@ Resources:
       ImageId: !Ref MachineImageID
       InstanceType: g4dn.xlarge
       SecurityGroupIds:
-        - !Sub ${SecurityGroupID}
+        - Fn::ImportValue: 
+          'Fn::Sub': '${NetworkStackName}-SecurityGroupID'
       TagSpecifications:
         - ResourceType: instance
           Tags:
