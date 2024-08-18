@@ -80,7 +80,7 @@ Resources:
               VolumeType: gp2
               DeleteOnTermination: true
               Encrypted: true
-              DeviceName: /dev/xvdcz
+            DeviceName: /dev/xvdcz
         ImageId: !Ref MachineImageID
         InstanceType: g4dn.xlarge
         SecurityGroupIds: 
