@@ -1,8 +1,11 @@
+# スタック名は '環境名'-NW(ex.dev-NW) で指定すること。EC2のスタックで使うので。
+
 AWSTemplateFormatVersion: "2010-09-09"
 
 Description: This is a cfn template of a VPC with one public subnet. 
 
 Parameters:
+  # 環境(dev/test/prd)で分けること
   EnvironmentName:
     Description: An environment name that is prefixed to resource names
     Type: String
@@ -21,6 +24,7 @@ Parameters:
   PublicSubnetAZ:
     Description: Please enter the AZ for the public subnet
     Type: String
+    # 使用リージョンに応じて適宜設定
     Default: us-east-1a
 
 Resources:
