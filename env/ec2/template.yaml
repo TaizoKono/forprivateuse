@@ -88,8 +88,8 @@ Resources:
             SubnetId: 
               Fn::ImportValue: 
                 'Fn::Sub': '${NetworkStackName}-SubnetID'
-        SecurityGroupIds: 
-          - Fn::ImportValue: !Sub ${NetworkStackName}-SecurityGroupID
+            Groups: 
+              - Fn::ImportValue: !Sub ${NetworkStackName}-SecurityGroupID
         TagSpecifications:
           - ResourceType: instance
             Tags:
