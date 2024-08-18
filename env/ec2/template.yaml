@@ -34,7 +34,7 @@ Parameters:
     # AMIの指定。将来的にカスタムイメージを使う場合はここを変更。
     Description: An AMI ID for EC2 Instance
     Type: String
-    Default: 
+    Default: ami-0d267c22adcb5e686
 
 
 Resources:
