@@ -86,7 +86,7 @@ Resources:
         NetworkInterfaces:
           - SubnetId: 
               Fn::ImportValue: 
-                'Fn::Sub': '${NetworkStackNameParameter}-SubnetID'
+                'Fn::Sub': '${NetworkStackName}-SubnetID'
         SecurityGroupIds: 
           - Fn::ImportValue: !Sub ${NetworkStackName}-SecurityGroupID
         TagSpecifications:
