@@ -85,7 +85,7 @@ Resources:
         InstanceType: g4dn.xlarge
         NetworkInterfaces:
           - SubnetId: !ImportValue
-              !Sub '${NetworkStackName}-SubnetID'
+              !Sub ${NetworkStackName}-SubnetID
         SecurityGroupIds: 
           - Fn::ImportValue: !Sub ${NetworkStackName}-SecurityGroupID
         TagSpecifications:
