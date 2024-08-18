@@ -69,28 +69,28 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
 
-  PublicSubnet1RouteTableAssociation:
+  PublicSubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet
 
-    SecurityGroup:
-      Type: AWS::EC2::SecurityGroup
-      Properties:
-        GroupName: "public-sg"
-        GroupDescription: "Security group for instances in public subnet"
-        SecurityGroupEgress: 
-          - IpProtocol: -1
-            FromPort: -1
-            ToPort: -1
-            CidrIp: 0.0.0.0/0
-        SecurityGroupIngress: 
-          - IpProtocol: -1
-            FromPort: -1
-            ToPort: -1
-            CidrIp: 0.0.0.0/0
-        VpcId: !Ref VPC
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "public-sg"
+      GroupDescription: "Security group for instances in public subnet"
+      SecurityGroupEgress: 
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+      SecurityGroupIngress: 
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+      VpcId: !Ref VPC
 
 
 Outputs:
