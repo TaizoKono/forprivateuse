@@ -14,11 +14,11 @@ Parameters:
   NetworkStackName:
     Description: the stack name of NW to deploy EC2 instance
     Type: String
-    Default: !Sub ${EnvironmentName}-NW
+    Default: dev-NW
 
   SubnetID:
     Description: A Subnet ID for EC2 Instance
-    Type: String
+    Type: AWS::EC2::Subnet::Id
     Default: 
       - Fn::ImportValue: 
         - !Sub
@@ -27,7 +27,7 @@ Parameters:
 
   SecurityGroupID:
     Description: A Security group ID for EC2 Instance
-    Type: String
+    Type: AWS::EC2::SecurityGroup::Id
     Default: 
       - Fn::ImportValue: 
         - !Sub
@@ -37,7 +37,7 @@ Parameters:
   MachineImageID:
     # AMIの指定。将来的にカスタムイメージを使う場合はここを変更。
     Description: An AMI ID for EC2 Instance
-    Type: String
+    Type: AWS::EC2::Image::Id
     Default: ami-0d267c22adcb5e686
 
 
