@@ -1,0 +1,3 @@
+template-file-path: env/ec2/template.yaml
+parameters: {}
+tags: {}
