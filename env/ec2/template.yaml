@@ -80,29 +80,29 @@ Resources:
         - !Ref InstanceProfileRole
           
   LaunchTemplate:
-     Type: 'AWS::EC2::LaunchTemplate'
-     Properties:
-       LaunchTemplateData:
+    Type: 'AWS::EC2::LaunchTemplate'
+      Properties:
+        LaunchTemplateData:
           IamInstanceProfile:
             Arn: !GetAtt
               - IamInstanceProfile
               - Arn
-         BlockDeviceMappings: 
-          - Ebs:
-              VolumeSize: 30
-              VolumeType: gp2
-              DeleteOnTermination: true
-              Encrypted: true
+      BlockDeviceMappings: 
+        - Ebs:
+            VolumeSize: 30
+            VolumeType: gp2
+            DeleteOnTermination: true
+            Encrypted: true
             DeviceName: /dev/xvdcz
-          ImageId: !Ref MachineImageID
-          InstanceType: g4dn.xlarge
-          SecurityGroupIds:
-            - !Sub ${SecurityGroupID}
-          TagSpecifications:
-            - ResourceType: instance
-              Tags:
-              - Key: Name
-                Value: !Sub ${EnvironmentName} Launch Template
+      ImageId: !Ref MachineImageID
+      InstanceType: g4dn.xlarge
+      SecurityGroupIds:
+        - !Sub ${SecurityGroupID}
+      TagSpecifications:
+        - ResourceType: instance
+          Tags:
+            - Key: Name
+              Value: !Sub ${EnvironmentName} Launch Template
 
   Instance:
     Type: 'AWS::EC2::Instance'
