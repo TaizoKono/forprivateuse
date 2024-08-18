@@ -1,1 +1,127 @@
+# スタック名は '環境名'-EC2(ex.dev-NW) で指定すること。
 
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: This is a cfn template of a EC2 instance. 
+
+Parameters:
+  # 環境(dev/test/prd)で分けること。NWスタックと対応する。
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+    Default: dev
+    
+  NetworkStackName:
+    Description: the stack name of NW to deploy EC2 instance
+    Type: String
+    Default: !Sub ${EnvironmentName}-NW
+
+  SubnetID:
+    Description: A Subnet ID for EC2 Instance
+    Type: String
+    Default: 
+      - Fn::ImportValue: 
+        'Fn::Sub': '${NetworkStackName}-SubnetID'
+
+  SecurityGroupID:
+    Description: A Security group ID for EC2 Instance
+    Type: String
+    Default: 
+      - Fn::ImportValue: 
+        'Fn::Sub': '${NetworkStackName}-SecurityGroupID'
+
+  MachineImageID:
+    # AMIの指定。将来的にカスタムイメージを使う場合はここを変更。
+    Description: An AMI ID for EC2 Instance
+    Type: String
+    Default: 
+
+
+Resources:
+  InstanceProfileRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: !Sub ${EnvironmentName}-allow-ssm
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ssm:UpdateInstanceInformation
+                  - ssmmessages:CreateControlChannel
+                  - ssmmessages:CreateDataChannel
+                  - ssmmessages:OpenControlChannel
+                  - ssmmessages:OpenDataChannel
+                  - kms:GenerateDataKey
+                  - kms:Decrypt
+                  - logs:CreateLogStream",
+                  - logs:PutLogEvents",
+                  - logs:DescribeLogGroups",
+                  - logs:DescribeLogStreams"
+                Resource: '*'
+
+  IamInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: IamInstanceProfile
+      Path: "/"
+      Roles:
+        - !Ref InstanceProfileRole
+          
+   LaunchTemplate:
+     Type: 'AWS::EC2::LaunchTemplate'
+     Properties:
+       LaunchTemplateData:
+          IamInstanceProfile:
+            Arn: !GetAtt
+              - IamInstanceProfile
+              - Arn
+         BlockDeviceMappings: 
+          - Ebs:
+              VolumeSize: 30
+              VolumeType: gp2
+              DeleteOnTermination: true
+              Encrypted: true
+            DeviceName: /dev/xvdcz
+          ImageId: !Ref MachineImageID
+          InstanceType: g4dn.xlarge
+          SecurityGroupIds:
+            - !Sub ${SecurityGroupID}
+          TagSpecifications:
+            - ResourceType: instance
+              Tags:
+              - Key: Name
+                Value: !Sub ${EnvironmentName} Launch Template
+
+  Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties: 
+      LaunchTemplate:
+        LaunchTemplateId: !Ref LaunchTemplate
+        Version: !GetAtt LaunchTemplate.DefaultVersionNumber
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Instance
+
+
+Outputs:
+  IAM:
+    Description: A reference to the created IAM resource
+    Value: 
+      - !Ref InstanceProfileRole
+      - !Ref IamInstanceProfile
+
+  EC2:
+    Description: A reference to the created EC2 Instance
+    Value: !Ref Instance
