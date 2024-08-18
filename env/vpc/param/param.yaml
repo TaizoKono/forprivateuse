@@ -1,3 +1,3 @@
-template-file-path: env/vpc/vpc.yaml
+template-file-path: env/vpc/template.yaml
 parameters: {}
 tags: {}
