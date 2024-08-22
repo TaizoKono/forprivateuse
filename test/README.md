@@ -18,7 +18,7 @@
 #### 2. dockerインストールの前に  
 　  
 公式ページの一番上にこんな注意書きが…  
-![firewall warning](.\firewall-warning.png)  
+![firewall warning](./firewall-warning.png)  
 　  
 　  
 dockerはufwやfirewalldの設定の影響を受けるとのこと。  
