@@ -11,7 +11,8 @@
 ### タスク
 #### 1. 前提(設定する環境)
 　  
-  OS:Ubuntu Focal 20.04  
+  OS:Ubuntu ~Focal 20.04~  
+  OS:Ubuntu Jammy 22.04   
   docker:27.1.1  
 　  
 　  
@@ -74,7 +75,8 @@ apt-cache madison docker-ce | awk '{ print $3 }' | grep 27.1.1  # 対象のバ�
 ~~~
 - インストールするバージョンのパッケージ名を変数に入れる
 ~~~shell:shell
-VERSION_STRING=5:27.1.1-1~ubuntu.20.04~focal
+# VERSION_STRING=5:27.1.1-1~ubuntu.22.04~Focal
+VERSION_STRING=5:27.1.1-1~ubuntu.22.04~jammy
 ~~~
 - dockerパッケージをインストールする  
 ~~~shell:shell
