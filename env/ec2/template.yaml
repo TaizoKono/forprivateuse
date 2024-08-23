@@ -74,13 +74,13 @@ Resources:
           Arn: !GetAtt
             - IamInstanceProfile
             - Arn
-        BlockDeviceMappings: 
-          - Ebs:
-              VolumeSize: 50
-              VolumeType: gp2
-              DeleteOnTermination: true
-              Encrypted: true
-            DeviceName: /dev/sda1
+        # BlockDeviceMappings: 
+        #   - Ebs:
+        #       VolumeSize: 50
+        #       VolumeType: gp2
+        #       DeleteOnTermination: true
+        #       Encrypted: true
+        #     DeviceName: /dev/sda1
         ImageId: !Ref MachineImageID
         InstanceType: g4dn.xlarge
         NetworkInterfaces:
@@ -96,15 +96,31 @@ Resources:
               - Key: Name
                 Value: !Sub ${EnvironmentName} Launch Template
 
-  Instance:
-    Type: 'AWS::EC2::Instance'
-    Properties: 
-      LaunchTemplate:
-        LaunchTemplateId: !Ref LaunchTemplate
-        Version: !GetAtt LaunchTemplate.DefaultVersionNumber
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Instance
+  # Instance:
+  #   Type: 'AWS::EC2::Instance'
+  #   Properties: 
+  #     LaunchTemplate:
+  #       LaunchTemplateId: !Ref LaunchTemplate
+  #       Version: !GetAtt LaunchTemplate.DefaultVersionNumber
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Sub ${EnvironmentName} Instance
+
+  # RootVolume:
+  #   Type: AWS::EC2::Volume
+  #   Properties:
+  #     Size: 100
+  #     Encrypted: true
+  #     AvailabilityZone: !GetAtt Instance.AvailabilityZone
+  #   DeletionPolicy: Delete
+
+  # RootMountPoint:
+  #   Type: AWS::EC2::VolumeAttachment
+  #   Properties:
+  #     InstanceId: !Ref Instance
+  #     VolumeId: !Ref RootVolume
+  #     Device: /dev/sda1
+
 
 
 Outputs:
@@ -116,6 +132,6 @@ Outputs:
     Description: A reference to the created IAM resource
     Value:  !Ref IamInstanceProfile
 
-  EC2:
-    Description: A reference to the created EC2 Instance
-    Value: !Ref Instance
+  # EC2:
+  #   Description: A reference to the created EC2 Instance
+  #   Value: !Ref Instance
