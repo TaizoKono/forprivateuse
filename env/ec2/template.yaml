@@ -102,25 +102,16 @@ Resources:
       LaunchTemplate:
         LaunchTemplateId: !Ref LaunchTemplate
         Version: !GetAtt LaunchTemplate.DefaultVersionNumber
+      BlockDeviceMappings: 
+          - DeviceName: /dev/sda1
+            Ebs:
+              VolumeSize: 50
+              VolumeType: gp2
+              DeleteOnTermination: true
+              Encrypted: true
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} Instance
-
-  RootVolume:
-    Type: AWS::EC2::Volume
-    Properties:
-      Size: 100
-      Encrypted: true
-      AvailabilityZone: !GetAtt Instance.AvailabilityZone
-    DeletionPolicy: Delete
-
-  RootMountPoint:
-    Type: AWS::EC2::VolumeAttachment
-    Properties:
-      InstanceId: !Ref Instance
-      VolumeId: !Ref RootVolume
-      Device: /dev/sda1
-
 
 
 Outputs:
