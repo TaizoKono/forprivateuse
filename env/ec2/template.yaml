@@ -118,4 +118,4 @@ Outputs:
 
   EC2:
     Description: A reference to the created EC2 Instance
-  #   Value: !Ref Instance
+    Value: !Ref Instance
