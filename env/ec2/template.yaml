@@ -89,33 +89,33 @@ Resources:
               - Key: Name
                 Value: !Sub ${EnvironmentName} Launch Template
 
-  Instance:
-    Type: 'AWS::EC2::Instance'
-    Properties: 
-      LaunchTemplate:
-        LaunchTemplateId: !Ref LaunchTemplate
-        Version: !GetAtt LaunchTemplate.DefaultVersionNumber
-      BlockDeviceMappings: 
-          - DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: 50
-              VolumeType: gp2
-              DeleteOnTermination: true
-              Encrypted: true
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Instance
+  # Instance:
+  #   Type: 'AWS::EC2::Instance'
+  #   Properties: 
+  #     LaunchTemplate:
+  #       LaunchTemplateId: !Ref LaunchTemplate
+  #       Version: !GetAtt LaunchTemplate.DefaultVersionNumber
+  #     BlockDeviceMappings: 
+  #         - DeviceName: /dev/sda1
+  #           Ebs:
+  #             VolumeSize: 50
+  #             VolumeType: gp2
+  #             DeleteOnTermination: true
+  #             Encrypted: true
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Sub ${EnvironmentName} Instance
 
 
-Outputs:
-  InstanceProfileRole:
-    Description: A reference to the created IAM resource
-    Value:  !Ref InstanceProfileRole
+# Outputs:
+#   InstanceProfileRole:
+#     Description: A reference to the created IAM resource
+#     Value:  !Ref InstanceProfileRole
       
-  IamInstanceProfile:
-    Description: A reference to the created IAM resource
-    Value:  !Ref IamInstanceProfile
+#   IamInstanceProfile:
+#     Description: A reference to the created IAM resource
+#     Value:  !Ref IamInstanceProfile
 
-  EC2:
-    Description: A reference to the created EC2 Instance
-    Value: !Ref Instance
+#   EC2:
+#     Description: A reference to the created EC2 Instance
+#     Value: !Ref Instance
