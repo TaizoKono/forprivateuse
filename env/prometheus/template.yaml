@@ -1,0 +1,128 @@
+# スタック名は '環境名'-EC2(ex.dev-prometheus) で指定すること。
+
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: This is a cfn template of a EC2 instance of prometheus server. 
+
+Parameters:
+  # 環境(dev/test/prd)で分けること。NWスタックと対応する。
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+    Default: dev
+    
+  NetworkStackName:
+    Description: the stack name of NW to deploy EC2 instance
+    Type: String
+    # インスタンスをデプロイするNWスタックを指定する。
+    Default: dev-NW
+
+  MachineImageID:
+    # AMIの指定。将来的にカスタムイメージを使う場合はここを変更。
+    Description: An AMI ID for EC2 Instance
+    Type: AWS::EC2::Image::Id
+    Default: ami-0a0e5d9c7acc336f1
+
+
+Resources:
+  InstanceProfileRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: !Sub ${EnvironmentName}-allow-ssm-prometheus
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ssm:UpdateInstanceInformation
+                  - ssmmessages:CreateControlChannel
+                  - ssmmessages:CreateDataChannel
+                  - ssmmessages:OpenControlChannel
+                  - ssmmessages:OpenDataChannel
+                  - kms:GenerateDataKey
+                  - kms:Decrypt
+                  - logs:CreateLogStream",
+                  - logs:PutLogEvents",
+                  - logs:DescribeLogGroups",
+                  - logs:DescribeLogStreams"
+                Resource: '*'
+
+  IamInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: IamInstanceProfile
+      Path: "/"
+      Roles:
+        - !Ref InstanceProfileRole
+          
+  LaunchTemplate:
+    Type: 'AWS::EC2::LaunchTemplate'
+    Properties:
+      LaunchTemplateData:
+        IamInstanceProfile:
+          Arn: !GetAtt
+            - IamInstanceProfile
+            - Arn
+        ImageId: !Ref MachineImageID
+        InstanceType: t3a.medium
+        NetworkInterfaces:
+          - DeviceIndex: 0
+            SubnetId: 
+              Fn::ImportValue: 
+                'Fn::Sub': '${NetworkStackName}-SubnetID'
+            Groups: 
+              - Fn::ImportValue: !Sub ${NetworkStackName}-SecurityGroupID
+        UserData:
+          Fn::Base64: !Sub |
+              #!/bin/bash
+              apt-get update
+              curl -fsSL https://get.docker.com -o get-docker.sh
+              sudo sh get-docker.sh
+              sudo usermod -aG docker ubuntu
+        TagSpecifications:
+          - ResourceType: instance
+            Tags:
+              - Key: Name
+                Value: !Sub ${EnvironmentName} Launch Template of prometheus
+
+  Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties: 
+      LaunchTemplate:
+        LaunchTemplateId: !Ref LaunchTemplate
+        Version: !GetAtt LaunchTemplate.DefaultVersionNumber
+      BlockDeviceMappings: 
+          - DeviceName: /dev/sda1
+            Ebs:
+              VolumeSize: 30
+              VolumeType: gp2
+              DeleteOnTermination: true
+              Encrypted: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} prometheus
+
+
+Outputs:
+  InstanceProfileRole:
+    Description: A reference to the created IAM resource
+    Value:  !Ref InstanceProfileRole
+      
+  IamInstanceProfile:
+    Description: A reference to the created IAM resource
+    Value:  !Ref IamInstanceProfile
+
+  EC2:
+    Description: A reference to the created EC2 Instance
+    Value: !Ref Instance
