@@ -61,7 +61,7 @@ Resources:
   IamInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
-      InstanceProfileName: IamInstanceProfile
+      InstanceProfileName: IamInstanceProfile-prometheus
       Path: "/"
       Roles:
         - !Ref InstanceProfileRole
