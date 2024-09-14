@@ -21,7 +21,7 @@ Parameters:
     # AMIの指定。将来的にカスタムイメージを使う場合はここを変更。
     Description: An AMI ID for EC2 Instance
     Type: AWS::EC2::Image::Id
-    Default: ami-0bee571753f7129a4
+    Default: ami-0a0e5d9c7acc336f1
 
 
 Resources:
@@ -89,22 +89,22 @@ Resources:
               - Key: Name
                 Value: !Sub ${EnvironmentName} Launch Template
 
-  Instance:
-    Type: 'AWS::EC2::Instance'
-    Properties: 
-      LaunchTemplate:
-        LaunchTemplateId: !Ref LaunchTemplate
-        Version: !GetAtt LaunchTemplate.DefaultVersionNumber
-      BlockDeviceMappings: 
-          - DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: 50
-              VolumeType: gp2
-              DeleteOnTermination: true
-              Encrypted: true
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Instance
+  # Instance:
+  #   Type: 'AWS::EC2::Instance'
+  #   Properties: 
+  #     LaunchTemplate:
+  #       LaunchTemplateId: !Ref LaunchTemplate
+  #       Version: !GetAtt LaunchTemplate.DefaultVersionNumber
+  #     BlockDeviceMappings: 
+  #         - DeviceName: /dev/sda1
+  #           Ebs:
+  #             VolumeSize: 50
+  #             VolumeType: gp2
+  #             DeleteOnTermination: true
+  #             Encrypted: true
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Sub ${EnvironmentName} Instance
 
 
 Outputs:
@@ -116,6 +116,6 @@ Outputs:
     Description: A reference to the created IAM resource
     Value:  !Ref IamInstanceProfile
 
-  EC2:
-    Description: A reference to the created EC2 Instance
-    Value: !Ref Instance
+  # EC2:
+  #   Description: A reference to the created EC2 Instance
+  #   Value: !Ref Instance
